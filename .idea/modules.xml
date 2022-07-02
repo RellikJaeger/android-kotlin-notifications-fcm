@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android-kotlin-notifications-fcm.iml" filepath="$PROJECT_DIR$/.idea/modules/android-kotlin-notifications-fcm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-kotlin-notifications-fcm.app.unitTest.iml" />
+    </modules>
+  </component>
+</project>
