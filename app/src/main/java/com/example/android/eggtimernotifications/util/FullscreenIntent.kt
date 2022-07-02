@@ -20,21 +20,21 @@ object FullscreenIntent {
     private lateinit var ctx: Context
 
     fun init(context: Context) {
-        ctx = context.applicationContext
+        ctx = context
     }
 
     fun openApp(context: Context) {
-        ctx = context.applicationContext
+        ctx = context
         val focusIntent: Intent =
             ctx.packageManager.getLaunchIntentForPackage(ctx.packageName)!!.cloneFilter()
         focusIntent.addFlags(
-            Intent.FLAG_ACTIVITY_REORDER_TO_FRONT + Intent.FLAG_ACTIVITY_NEW_TASK +
+            Intent.FLAG_ACTIVITY_NEW_TASK +
                     WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
                     WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
                     WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
         )
         ctx.startActivity(focusIntent)
-        Log.i(TAG, "FullscreenIntent opened ${ctx.packageName} app.")
+        Log.i(TAG, "RELLIK: FullscreenIntent opened ${ctx.packageName} app.")
     }
 
     fun openActivity(targetClassName: Class<*>) {
@@ -42,10 +42,10 @@ object FullscreenIntent {
             """
                 [IMPORTANT] Excepted a context.
                 ---
-                Example 1: FullscreenIntent.init(this) // init once
-                         : FullscreenIntent.openActivity(HomeActivity::class.java)
+                Example 1: FullscreenIntent.init(context) // init once
+                         : FullscreenIntent.openActivity(TargetActivity::class.java)
                 ---
-                Example 2: FullscreenIntent.openActivity(context, HomeActivity::class.java)
+                Example 2: FullscreenIntent.openActivity(context, TargetActivity::class.java)
                 ---
             """.trimIndent()
         )
@@ -61,11 +61,11 @@ object FullscreenIntent {
                 .setPackage(ctx.packageName)
                 .setClassName(ctx.packageName, targetClassName.name)
         )
-        Log.i(TAG, "FullscreenIntent opened ${targetClassName.name} activity.")
+        Log.i(TAG, "RELLIK: FullscreenIntent opened ${targetClassName.name} activity.")
     }
 
     fun openActivity(context: Context, targetClassName: Class<*>) {
-        ctx = context.applicationContext
+        ctx = context
         ctx.startActivity(
             Intent(Intent.ACTION_DEFAULT)
                 .addCategory(Intent.CATEGORY_LAUNCHER)
@@ -78,7 +78,24 @@ object FullscreenIntent {
                 .setPackage(ctx.packageName)
                 .setClassName(ctx.packageName, targetClassName.name)
         )
-        Log.i(TAG, "FullscreenIntent opened ${targetClassName.name} activity.")
+        Log.i(TAG, "RELLIK: FullscreenIntent opened ${targetClassName.name} activity.")
+    }
+
+    fun openActivity(context: Context, targetClassName: Class<*>, data: Map<String, String>) {
+        ctx = context
+        ctx.startActivity(
+            Intent(Intent.ACTION_DEFAULT).putExtra("data", data.toString())
+                .addCategory(Intent.CATEGORY_LAUNCHER)
+                .addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK +
+                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
+                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
+                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                )
+                .setPackage(ctx.packageName)
+                .setClassName(ctx.packageName, targetClassName.name)
+        )
+        Log.i(TAG, "RELLIK: FullscreenIntent opened ${targetClassName.name} activity.")
     }
 
     fun isAppForeground(context: Context): Boolean {
@@ -105,5 +122,35 @@ object FullscreenIntent {
             }
             false
         }
+    }
+
+    fun getAppIntent(context: Context): Intent {
+        ctx = context.applicationContext
+        val focusIntent: Intent =
+            ctx.packageManager.getLaunchIntentForPackage(ctx.packageName)!!.cloneFilter()
+        focusIntent.addFlags(
+            Intent.FLAG_ACTIVITY_NEW_TASK +
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+        )
+        Log.i(TAG, "RELLIK: FullscreenIntent.getAppIntent() returned ${focusIntent}.")
+        return focusIntent
+    }
+
+    fun getActivityIntent(context: Context, targetClassName: Class<*>): Intent {
+        ctx = context.applicationContext
+        val intent: Intent = Intent(Intent.ACTION_DEFAULT)
+            .addCategory(Intent.CATEGORY_LAUNCHER)
+            .addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK +
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
+                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
+            .setPackage(ctx.packageName)
+            .setClassName(ctx.packageName, targetClassName.name)
+        Log.i(TAG, "RELLIK: FullscreenIntent.getActivityIntent() returned ${intent}.")
+        return intent
     }
 }

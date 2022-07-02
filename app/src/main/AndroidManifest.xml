@@ -3,6 +3,7 @@
     package="com.example.android.eggtimernotifications">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/egg_icon"
         android:label="@string/app_name"
@@ -10,10 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".NotificationActivity"
+            android:name=".activity.NotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,43 +23,13 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".receiver.AlarmReceiver"
-            android:enabled="true"
-            android:exported="false" />
-        <receiver
-            android:name=".receiver.SnoozeReceiver"
-            android:enabled="true"
-            android:exported="false" />
-
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".service.FCMService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- region [fcm_default_icon] -->
-        <!--
-            Set custom default icon. This is used when no icon is set for incoming notification messages.
-             See README(https://goo.gl/l4GJaQ) for more.
-        -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/common_google_signin_btn_icon_dark" />
-        <!--
-            Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more.
-        -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
-        <!-- endregion -->
-        <!-- region [fcm_default_channel] -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/breakfast_notification_channel_id" />
-        <!-- endregion -->
     </application>
 
 </manifest>

@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NotificationActivity">
+    tools:context=".activity.NotificationActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Notifications" />
+        android:layout_marginHorizontal="16dp"
+        android:text="Data payload received from FCM!"
+        android:textSize="20sp" />
 
 </RelativeLayout>
