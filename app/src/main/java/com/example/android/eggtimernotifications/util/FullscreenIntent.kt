@@ -19,24 +19,19 @@ object FullscreenIntent {
     @JvmStatic
     private lateinit var ctx: Context
 
+    @JvmStatic
     fun init(context: Context) {
         ctx = context
     }
 
+    @JvmStatic
     fun openApp(context: Context) {
         ctx = context
-        val focusIntent: Intent =
-            ctx.packageManager.getLaunchIntentForPackage(ctx.packageName)!!.cloneFilter()
-        focusIntent.addFlags(
-            Intent.FLAG_ACTIVITY_NEW_TASK +
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
-                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-        )
-        ctx.startActivity(focusIntent)
-        Log.i(TAG, "RELLIK: FullscreenIntent opened ${ctx.packageName} app.")
+        ctx.startActivity(getAppIntent(ctx))
+        Log.i(TAG, "FullscreenIntent opened ${ctx.packageName} app.")
     }
 
+    @JvmStatic
     fun openActivity(targetClassName: Class<*>) {
         if (ctx == null) throw IllegalAccessException(
             """
@@ -49,55 +44,27 @@ object FullscreenIntent {
                 ---
             """.trimIndent()
         )
-        ctx.startActivity(
-            Intent(Intent.ACTION_DEFAULT)
-                .addCategory(Intent.CATEGORY_LAUNCHER)
-                .addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK +
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                )
-                .setPackage(ctx.packageName)
-                .setClassName(ctx.packageName, targetClassName.name)
-        )
-        Log.i(TAG, "RELLIK: FullscreenIntent opened ${targetClassName.name} activity.")
+        ctx.startActivity(getActivityIntent(ctx, targetClassName))
+        Log.i(TAG, "FullscreenIntent opened ${targetClassName.name} activity.")
     }
 
+    @JvmStatic
     fun openActivity(context: Context, targetClassName: Class<*>) {
         ctx = context
-        ctx.startActivity(
-            Intent(Intent.ACTION_DEFAULT)
-                .addCategory(Intent.CATEGORY_LAUNCHER)
-                .addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK +
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                )
-                .setPackage(ctx.packageName)
-                .setClassName(ctx.packageName, targetClassName.name)
-        )
-        Log.i(TAG, "RELLIK: FullscreenIntent opened ${targetClassName.name} activity.")
+        ctx.startActivity(getActivityIntent(ctx, targetClassName))
+        Log.i(TAG, "FullscreenIntent opened ${targetClassName.name} activity.")
     }
 
+    @JvmStatic
     fun openActivity(context: Context, targetClassName: Class<*>, data: Map<String, String>) {
         ctx = context
         ctx.startActivity(
-            Intent(Intent.ACTION_DEFAULT).putExtra("data", data.toString())
-                .addCategory(Intent.CATEGORY_LAUNCHER)
-                .addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK +
-                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
-                            WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
-                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                )
-                .setPackage(ctx.packageName)
-                .setClassName(ctx.packageName, targetClassName.name)
+            getActivityIntent(ctx, targetClassName).putExtra("data", data.toString())
         )
-        Log.i(TAG, "RELLIK: FullscreenIntent opened ${targetClassName.name} activity.")
+        Log.i(TAG, "FullscreenIntent opened ${targetClassName.name} activity.")
     }
 
+    @JvmStatic
     fun isAppForeground(context: Context): Boolean {
         val keyguardManager =
             context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
@@ -124,6 +91,7 @@ object FullscreenIntent {
         }
     }
 
+    @JvmStatic
     fun getAppIntent(context: Context): Intent {
         ctx = context.applicationContext
         val focusIntent: Intent =
@@ -134,10 +102,11 @@ object FullscreenIntent {
                     WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
                     WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
         )
-        Log.i(TAG, "RELLIK: FullscreenIntent.getAppIntent() returned ${focusIntent}.")
+        Log.i(TAG, "FullscreenIntent.getAppIntent() returned ${focusIntent}.")
         return focusIntent
     }
 
+    @JvmStatic
     fun getActivityIntent(context: Context, targetClassName: Class<*>): Intent {
         ctx = context.applicationContext
         val intent: Intent = Intent(Intent.ACTION_DEFAULT)
@@ -150,7 +119,7 @@ object FullscreenIntent {
             )
             .setPackage(ctx.packageName)
             .setClassName(ctx.packageName, targetClassName.name)
-        Log.i(TAG, "RELLIK: FullscreenIntent.getActivityIntent() returned ${intent}.")
+        Log.i(TAG, "FullscreenIntent.getActivityIntent() returned ${intent}.")
         return intent
     }
 }

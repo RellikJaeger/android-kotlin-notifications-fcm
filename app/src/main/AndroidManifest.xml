@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.eggtimernotifications">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
     <application
-        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/egg_icon"
         android:label="@string/app_name"
@@ -11,10 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.NotificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.LauncherActivity"
+            android:configChanges="orientation|screenLayout|screenSize|keyboard|keyboardHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:configChanges="orientation|screenLayout|screenSize|keyboard|keyboardHidden"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="orientation|screenLayout|screenSize|keyboard|keyboardHidden"
+            android:exported="false" />
 
         <service
             android:name=".service.FCMService"
